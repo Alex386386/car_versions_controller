@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{%block title%}{{ car.model|truncatechars:30 }}{% endblock %}
+{% block content %}
+<main class="d-flex justify-content-center align-items-center vh-100">
+    <div class="row w-100" style="max-width: 800px;">
+        <aside class="col-12 col-md-3 mb-3">
+            <ul class="list-group list-group-flush">
+                <li>
+                    Марка автомобиля: {{ car.make }}
+                </li>
+                <li>
+                    Модель: {{ car.model }}
+                </li>
+                <li>
+                    Год выпуска: {{ car.year }}
+                </li>
+                <li>
+                    Описание: {{ car.description }}
+                </li>
+            </ul>
+        </aside>
+        {% if car.owner.id == request.user.id %}
+            <a class="btn btn-primary mb-3" href="{% url 'cars:car_update' car.id %}">Обновить</a>
+        {% endif %}
+        <article class="col-12 col-md-9">
+            {% include 'includes/comments.html' %}
+        </article>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{%block title%}Новый автомобиль{% endblock %}
+{% block content %}
+<main>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 p-5">
+                <div class="card">
+                    <div class="card-header">
+                        Создать автомобиль на сайте
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_text">
+                                    Марка Автомобиля
+                                    <span class="required text-danger">*</span>
+                                </label>
+                                {{form.make}}
+                                <small id="id_text-help" class="form-text text-muted">
+                                    Введите марку автомобиля
+                                </small>
+                            </div>
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_group">
+                                    Модель
+                                </label>
+                                {{form.model}}
+                                <small id="id_group-help" class="form-text text-muted">
+                                    Введите модель автомобиля
+                                </small>
+                            </div>
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_year">
+                                    Год выпуска автомобиля
+                                </label>
+                                {{form.year}}
+                                <small id="id_year-help" class="form-text text-muted">
+                                    Введите год выпуска автомобиля
+                                </small>
+                            </div>
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_description">
+                                    Описание
+                                </label>
+                                {{form.description}}
+                                <small id="id_description-help" class="form-text text-muted">
+                                    Введите описание автомобиля
+                                </small>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">
+                                    {% if is_edit %}
+                                    Добавить пост
+                                    {% else %}
+                                    Сохранить изменения
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

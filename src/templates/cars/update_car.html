@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Редактировать автомобиль{% endblock %}
+{% block content %}
+<main>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 p-5">
+                <div class="card">
+                    <div class="card-header">
+                        Редактировать автомобиль
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_make">
+                                    Марка автомобиля
+                                    <span class="required text-danger">*</span>
+                                </label>
+                                {{ form.make }}
+                            </div>
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_model">
+                                    Модель автомобиля
+                                    <span class="required text-danger">*</span>
+                                </label>
+                                {{ form.model }}
+                            </div>
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_year">
+                                    Год выпуска
+                                </label>
+                                {{ form.year }}
+                            </div>
+                            <div class="form-group row my-3 p-3">
+                                <label for="id_description">
+                                    Описание
+                                </label>
+                                {{ form.description }}
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">
+                                    Сохранить изменения
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

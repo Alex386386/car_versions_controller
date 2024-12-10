@@ -1,0 +1,17 @@
+<ul>
+  <li>
+    Марка автомобиля: {{car.make}}
+  </li>
+  <li>
+    Модель: {{car.model}}
+  </li>
+  <li>
+    Год выпуска: {{car.year}}
+  </li>
+  <li>
+    Описание: {{car.description}}
+  </li>
+</ul>
+<p>{{ post.text }}</p>
+<a href="{% url 'cars:car_detail' car.id %}">Подробная информация </a>
+<br>

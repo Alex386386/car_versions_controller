@@ -1,0 +1,14 @@
+.github/
+.gitlab/
+venv/
+.venv/
+Dockerfile
+nginx/
+infra/
+README.md
+docker-compose.yaml
+.idea/
+__pycache__/
+.git/
+.gitignore
+.dockerignore
