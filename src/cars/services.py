@@ -9,7 +9,7 @@ from .models import Car, User
 from .paginator import run_pagination
 
 
-def _get_all_cars() -> QuerySet:
+def get_all_cars() -> QuerySet:
     """Получение всех объектов автомобилей для главной страницы."""
     return Car.objects.all().order_by("-id")
 
@@ -42,7 +42,7 @@ def create_comment(user: User, form: CommentForm, car: Car):
 
 def form_index_context(request: HttpRequest) -> dict:
     """Формирование контекста для главной страницы."""
-    cars = _get_all_cars()
+    cars = get_all_cars()
     page_obj = run_pagination(cars, request, 10)
     return {"page_obj": page_obj}
 
@@ -59,14 +59,14 @@ def form_detail_context(request: HttpRequest, car_id: int) -> dict:
     }
 
 
-def _check_owner(request: HttpRequest, car: Car) -> None:
+def check_owner(user: User, car: Car) -> None:
     """Проверка факта владения записью."""
-    if car.owner != request.user:
+    if car.owner != user:
         raise PermissionDenied("Вы не являетесь владельцем этого автомобиля.")
 
 
 def get_car_and_check_owner(request: HttpRequest, car_id: int) -> Car:
     """Объединение функционала для вызова в контрольном слое."""
     car = get_car_by_id(car_id)
-    _check_owner(request=request, car=car)
+    check_owner(user=request.user, car=car)
     return car

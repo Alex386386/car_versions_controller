@@ -10,5 +10,6 @@ docker-compose.yaml
 .idea/
 __pycache__/
 .git/
+tests/
 .gitignore
 .dockerignore
