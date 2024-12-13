@@ -131,6 +131,7 @@ POSTGRES_USER=<Имя пользователя для БД>
 POSTGRES_PASSWORD=<Пароль от БД>
 DB_HOST='controller_db'
 DB_PORT='5432'
+DEBUG=False
 ```
 
 Запустить проект:
@@ -145,6 +146,7 @@ sudo docker compose --env-file ../.env up --build -d
 установите зависимости из директории src и в корне проекта выполните следующую команду:
 
 ```
+export PYTHONPATH=$PYTHONPATH:/<полный путь до папки с проектом>/car_versions_controller/src
 pytest
 ```
 

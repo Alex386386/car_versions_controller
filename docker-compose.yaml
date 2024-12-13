@@ -13,6 +13,7 @@ services:
     restart: always
     volumes:
       - static_value:/app/static/
+      - ./src/logs/:/app/logs/
     env_file:
       - .env
     depends_on:

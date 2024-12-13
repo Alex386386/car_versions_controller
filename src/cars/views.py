@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 
+from core.loggers import apps_logger
 from .forms import CarForm
 from .services import (
     form_index_context,
@@ -16,12 +17,14 @@ from .services import (
 def index(request: HttpRequest) -> HttpResponse:
     """Главная страница."""
     context = form_index_context(request=request)
+    apps_logger.debug("Контекст главной страницы получен")
     return render(request, "cars/index.html", context)
 
 
 def car_detail(request: HttpRequest, car_id: int) -> HttpResponse:
     """Страница автомобиля полученного по id."""
     context = form_detail_context(request=request, car_id=car_id)
+    apps_logger.debug(f"Контекст страницы автомобиля с id {car_id}")
     return render(request, "cars/car_detail.html", context)
 
 
@@ -31,6 +34,7 @@ def car_create(request: HttpRequest) -> HttpResponse:
     form = CarForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         create_car(form=form, user=request.user)
+        apps_logger.debug(f"Пользователь с id {request.user.id} создал автомобиль")
         return redirect("cars:index")
     context = {"form": form}
     return render(request, "cars/create_car.html", context)
@@ -45,6 +49,9 @@ def update_car(request: HttpRequest, car_id: int) -> HttpResponse:
         form = CarForm(request.POST, instance=car)
         if form.is_valid():
             form.save()
+            apps_logger.debug(
+                f"Пользователь с id {request.user.id} обновил автомобиль {car_id}."
+            )
             return redirect("cars:car_detail", car_id=car.id)
     else:
         form = CarForm(instance=car)

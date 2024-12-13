@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = False
+DEBUG = os.getenv("DEBUG") == False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -41,11 +41,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if os.getenv("TESTING", "0") == "1":
-    ROOT_URLCONF = "src.src.urls"
-else:
-    ROOT_URLCONF = "src.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -66,13 +61,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "src.wsgi.application"
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 if os.getenv("TESTING", "0") == "1":
+    ROOT_URLCONF = "src.src.urls"
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -80,6 +70,7 @@ if os.getenv("TESTING", "0") == "1":
         }
     }
 else:
+    ROOT_URLCONF = "src.urls"
     DATABASES = {
         "default": {
             "ENGINE": os.getenv("DB_ENGINE"),
@@ -89,6 +80,68 @@ else:
             "HOST": os.getenv("DB_HOST"),
             "PORT": os.getenv("DB_PORT"),
         }
+    }
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "verbose": {
+                "format": "[{levelname}] ({asctime}) {module} - {process:d} {thread:d} : {message}",
+                "style": "{",
+            }
+        },
+        "handlers": {
+            "django_file": {
+                "level": "DEBUG",
+                "formatter": "verbose",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": "/app/logs/django_logs.log",
+                "maxBytes": 1024 * 1024 * 15,
+                "backupCount": 3,
+            },
+            "api_file": {
+                "level": "DEBUG",
+                "formatter": "verbose",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": "/app/logs/api.log",
+                "maxBytes": 1024 * 1024 * 15,
+                "backupCount": 3,
+            },
+            "apps_file": {
+                "level": "DEBUG",
+                "formatter": "verbose",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": "/app/logs/apps.log",
+                "maxBytes": 1024 * 1024 * 15,
+                "backupCount": 3,
+            },
+        },
+        "loggers": {
+            "django": {
+                "handlers": ["django_file"],
+                "propagate": False,
+            },
+            "django.request": {
+                "handlers": ["django_file"],
+                "level": "ERROR",
+                "propagate": False,
+            },
+            "api": {
+                "handlers": ["api_file"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+            "cars": {
+                "handlers": ["apps_file"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+            "comments": {
+                "handlers": ["apps_file"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+        },
     }
 
 
